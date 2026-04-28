@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/wobondar/pi-codex-fast/compare/v1.0.0...v1.0.1) (2026-04-28)
+
+
+### Bug Fixes
+
+* exclude CHANGELOG.md from oxfmt ([8e93b81](https://github.com/wobondar/pi-codex-fast/commit/8e93b81ac8381878453fde432fd8d719d33f05be))
+
 ## 1.0.0 (2026-04-28)
 
 

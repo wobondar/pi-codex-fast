@@ -23,6 +23,7 @@
     "index.ts",
     "utils.ts",
     "README.md",
+    "CHANGELOG.md",
     "LICENSE"
   ],
   "type": "module",

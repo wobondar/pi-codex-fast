@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2](https://github.com/wobondar/pi-codex-fast/compare/v1.0.1...v1.0.2) (2026-04-28)
+
+
+### Bug Fixes
+
+* ship CHANGELOG.md in the npm tarball ([11453e2](https://github.com/wobondar/pi-codex-fast/commit/11453e240b752226be884694378de6a9ed0e3242))
+
 ## [1.0.1](https://github.com/wobondar/pi-codex-fast/compare/v1.0.0...v1.0.1) (2026-04-28)
 
 

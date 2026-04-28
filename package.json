@@ -1,6 +1,6 @@
 {
   "name": "pi-codex-fast",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Fast mode toggle for OpenAI and Codex models in pi.",
   "keywords": [
     "codex",

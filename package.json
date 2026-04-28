@@ -1,0 +1,59 @@
+{
+  "name": "pi-codex-fast",
+  "version": "0.0.0",
+  "description": "Fast mode toggle for OpenAI and Codex models in pi.",
+  "keywords": [
+    "codex",
+    "openai",
+    "pi",
+    "pi-extension",
+    "pi-package"
+  ],
+  "homepage": "https://github.com/wobondar/pi-codex-fast#readme",
+  "bugs": {
+    "url": "https://github.com/wobondar/pi-codex-fast/issues"
+  },
+  "license": "MIT",
+  "author": "wobondar",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wobondar/pi-codex-fast.git"
+  },
+  "files": [
+    "index.ts",
+    "utils.ts",
+    "README.md",
+    "LICENSE"
+  ],
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "test:pi": "T=$(mktemp -d) && PI_CODING_AGENT_DIR=\"$T\" pi --list-models -e ./ >/dev/null && test -f \"$T/extensions/pi-codex-fast.json\"",
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix",
+    "fmt": "oxfmt",
+    "fmt:check": "oxfmt --check",
+    "prepublishOnly": "npm run fmt:check && npm run lint && npm run test"
+  },
+  "devDependencies": {
+    "@types/node": "^25.6.0",
+    "oxfmt": "^0.47.0",
+    "oxlint": "^1.62.0",
+    "oxlint-tsgolint": "^0.22.1",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.5"
+  },
+  "peerDependencies": {
+    "@mariozechner/pi-ai": "*",
+    "@mariozechner/pi-coding-agent": "*",
+    "@mariozechner/pi-tui": "*"
+  },
+  "engines": {
+    "node": ">=24"
+  },
+  "pi": {
+    "extensions": [
+      "./index.ts"
+    ]
+  }
+}

@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.3](https://github.com/wobondar/pi-codex-fast/compare/v1.0.2...v1.0.3) (2026-04-30)
+
+
+### Bug Fixes
+
+* update deps ([02e04c3](https://github.com/wobondar/pi-codex-fast/commit/02e04c3a32bf8387040f2c1479a8a723bf0ca8c2))
+
 ## [1.0.2](https://github.com/wobondar/pi-codex-fast/compare/v1.0.1...v1.0.2) (2026-04-28)
 
 

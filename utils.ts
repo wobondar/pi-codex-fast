@@ -1,15 +1,15 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
-import {
-  supportsXhigh,
-  type Api,
-  type AssistantMessageEventStream,
-  type Context,
-  type Model,
-  type OpenAICodexResponsesOptions,
-  type OpenAIResponsesOptions,
-  type SimpleStreamOptions,
-  type ThinkingLevel,
+import * as piAi from "@mariozechner/pi-ai";
+import type {
+  Api,
+  AssistantMessageEventStream,
+  Context,
+  Model,
+  OpenAICodexResponsesOptions,
+  OpenAIResponsesOptions,
+  SimpleStreamOptions,
+  ThinkingLevel,
 } from "@mariozechner/pi-ai";
 import { getAgentDir } from "@mariozechner/pi-coding-agent";
 import type { AutocompleteItem } from "@mariozechner/pi-tui";
@@ -18,6 +18,18 @@ export type FastModeStyle = "static" | "rainbow" | "glow";
 export type FastServiceTier = "priority" | undefined;
 export type SupportedProvider = "openai" | "openai-codex";
 export type JsonObject = Record<string, unknown>;
+
+type ThinkingLevelWithOff = ThinkingLevel | "off";
+type FastModeReasoningModel = Pick<Model<Api>, "id" | "reasoning"> & {
+  thinkingLevelMap?: Partial<Record<ThinkingLevelWithOff, string | null>>;
+};
+type FastModeOptionsModel = FastModeReasoningModel & Pick<Model<Api>, "maxTokens">;
+type PiAiThinkingHelpers = {
+  clampThinkingLevel?: (model: Model<Api>, level: ThinkingLevel) => ThinkingLevelWithOff;
+  supportsXhigh?: (model: Model<Api>) => boolean;
+};
+
+const piAiThinkingHelpers = piAi as unknown as PiAiThinkingHelpers;
 
 export interface PiFastModeConfig {
   enabled: boolean;
@@ -324,11 +336,15 @@ function defaultMaxTokens(model: Pick<Model<Api>, "maxTokens">): number | undefi
 }
 
 export function mapReasoningEffort(
-  model: Pick<Model<Api>, "id">,
+  model: FastModeReasoningModel,
   reasoning: ThinkingLevel | undefined,
 ): ThinkingLevel | undefined {
   if (!reasoning) return undefined;
-  if (reasoning === "xhigh" && !supportsXhigh(model as Model<Api>)) return "high";
+  const clamped = piAiThinkingHelpers.clampThinkingLevel?.(model as Model<Api>, reasoning);
+  if (clamped) return clamped === "off" ? undefined : clamped;
+  if (reasoning === "xhigh" && !piAiThinkingHelpers.supportsXhigh?.(model as Model<Api>)) {
+    return "high";
+  }
   return reasoning;
 }
 
@@ -355,7 +371,7 @@ function buildBaseProviderOptions(
 }
 
 export function buildOpenAIResponsesFastOptions(
-  model: Pick<Model<Api>, "id" | "maxTokens">,
+  model: FastModeOptionsModel,
   options: SimpleStreamOptions | undefined,
   serviceTier: FastServiceTier,
 ): OpenAIResponsesOptions {
@@ -370,7 +386,7 @@ export function buildOpenAIResponsesFastOptions(
 }
 
 export function buildOpenAICodexResponsesFastOptions(
-  model: Pick<Model<Api>, "id" | "maxTokens">,
+  model: FastModeOptionsModel,
   options: SimpleStreamOptions | undefined,
   serviceTier: FastServiceTier,
 ): OpenAICodexResponsesOptions {

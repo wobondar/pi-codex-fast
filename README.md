@@ -2,6 +2,8 @@
 
 Fast Mode extension for [pi](https://pi.dev) that toggles OpenAI/Codex priority service tier for configured models.
 
+Requires pi 0.74.0 or newer.
+
 ## Install
 
 ```bash

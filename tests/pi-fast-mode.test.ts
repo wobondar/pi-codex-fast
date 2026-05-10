@@ -2,7 +2,7 @@ import { existsSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { expect, test } from "vitest";
-import type { Context, Model } from "@mariozechner/pi-ai";
+import type { Context, Model } from "@earendil-works/pi-ai";
 import piFastModeExtension, { createPiFastModeExtension } from "../index";
 import {
   DEFAULT_CONFIG,
@@ -14,6 +14,7 @@ import {
   getNextFastModeStyle,
   isConfiguredFastModel,
   loadPiFastModeConfig,
+  mapReasoningEffort,
   mergeConfig,
   normalizeFastModels,
   parseFastCommand,
@@ -141,6 +142,14 @@ test("matches bare and provider-qualified configured models", () => {
   ).toBe(false);
 });
 
+test("maps reasoning with Pi's clampThinkingLevel behavior", () => {
+  expect(mapReasoningEffort(model({ reasoning: false }), "high")).toBeUndefined();
+  expect(mapReasoningEffort(model({ id: "gpt-5.1" }), "xhigh")).toBe("high");
+  expect(
+    mapReasoningEffort(model({ id: "gpt-5.5", thinkingLevelMap: { xhigh: "xhigh" } }), "xhigh"),
+  ).toBe("xhigh");
+});
+
 test("builds native OpenAI Responses options with service tier and reasoning clamp", () => {
   const opts = buildOpenAIResponsesFastOptions(
     model({ api: "openai-responses", provider: "openai", id: "gpt-5.1" }),
@@ -155,11 +164,23 @@ test("builds native OpenAI Responses options with service tier and reasoning cla
   expect(opts.maxTokens).toBe(32000);
 
   const codexOpts = buildOpenAICodexResponsesFastOptions(
-    model({ api: "openai-codex-responses", provider: "openai-codex", id: "gpt-5.5" }),
+    model({
+      api: "openai-codex-responses",
+      provider: "openai-codex",
+      id: "gpt-5.5",
+      thinkingLevelMap: { xhigh: "xhigh" },
+    }),
     { reasoning: "xhigh" },
     "priority",
   );
   expect(codexOpts.reasoningEffort).toBe("xhigh");
+
+  const noReasoningCodexOpts = buildOpenAICodexResponsesFastOptions(
+    model({ api: "openai-codex-responses", provider: "openai-codex", reasoning: false }),
+    { reasoning: "high" },
+    "priority",
+  );
+  expect(noReasoningCodexOpts.reasoningEffort).toBeUndefined();
 });
 
 test("native stream is used only for configured OpenAI/Codex fast requests", () => {

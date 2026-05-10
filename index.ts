@@ -3,7 +3,7 @@ import {
   type ExtensionAPI,
   type ExtensionCommandContext,
   type ExtensionContext,
-} from "@mariozechner/pi-coding-agent";
+} from "@earendil-works/pi-coding-agent";
 import {
   streamOpenAICodexResponses,
   streamOpenAIResponses,
@@ -14,7 +14,7 @@ import {
   type Context,
   type Model,
   type SimpleStreamOptions,
-} from "@mariozechner/pi-ai";
+} from "@earendil-works/pi-ai";
 import {
   createFastModeStream,
   describeFastMode,
@@ -39,7 +39,10 @@ export interface PiFastModeDeps {
   streamers?: Partial<FastModeStreamers>;
 }
 
-type SupportedModel = Pick<Model<Api>, "provider" | "id" | "api" | "maxTokens" | "reasoning">;
+type SupportedModel = Pick<
+  Model<Api>,
+  "provider" | "id" | "api" | "maxTokens" | "reasoning" | "thinkingLevelMap"
+>;
 type StatusContext = Pick<ExtensionContext, "cwd" | "hasUI" | "model" | "ui">;
 const DEFAULT_STREAMERS: FastModeStreamers = {
   streamOpenAIResponses,

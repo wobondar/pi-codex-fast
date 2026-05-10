@@ -1,7 +1,7 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import {
-  supportsXhigh,
+  clampThinkingLevel,
   type Api,
   type AssistantMessageEventStream,
   type Context,
@@ -10,9 +10,9 @@ import {
   type OpenAIResponsesOptions,
   type SimpleStreamOptions,
   type ThinkingLevel,
-} from "@mariozechner/pi-ai";
-import { getAgentDir } from "@mariozechner/pi-coding-agent";
-import type { AutocompleteItem } from "@mariozechner/pi-tui";
+} from "@earendil-works/pi-ai";
+import { getAgentDir } from "@earendil-works/pi-coding-agent";
+import type { AutocompleteItem } from "@earendil-works/pi-tui";
 
 export type FastModeStyle = "static" | "rainbow" | "glow";
 export type FastServiceTier = "priority" | undefined;
@@ -324,12 +324,11 @@ function defaultMaxTokens(model: Pick<Model<Api>, "maxTokens">): number | undefi
 }
 
 export function mapReasoningEffort(
-  model: Pick<Model<Api>, "id">,
+  model: Model<Api>,
   reasoning: ThinkingLevel | undefined,
 ): ThinkingLevel | undefined {
-  if (!reasoning) return undefined;
-  if (reasoning === "xhigh" && !supportsXhigh(model as Model<Api>)) return "high";
-  return reasoning;
+  const clampedReasoning = reasoning ? clampThinkingLevel(model, reasoning) : undefined;
+  return clampedReasoning === "off" ? undefined : clampedReasoning;
 }
 
 function buildBaseProviderOptions(
@@ -355,7 +354,7 @@ function buildBaseProviderOptions(
 }
 
 export function buildOpenAIResponsesFastOptions(
-  model: Pick<Model<Api>, "id" | "maxTokens">,
+  model: Model<Api>,
   options: SimpleStreamOptions | undefined,
   serviceTier: FastServiceTier,
 ): OpenAIResponsesOptions {
@@ -370,7 +369,7 @@ export function buildOpenAIResponsesFastOptions(
 }
 
 export function buildOpenAICodexResponsesFastOptions(
-  model: Pick<Model<Api>, "id" | "maxTokens">,
+  model: Model<Api>,
   options: SimpleStreamOptions | undefined,
   serviceTier: FastServiceTier,
 ): OpenAICodexResponsesOptions {

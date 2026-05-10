@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.1.0](https://github.com/wobondar/pi-codex-fast/compare/v1.0.3...v1.1.0) (2026-05-10)
+
+
+### Features
+
+* support pi 0.74 package scope ([f2a2338](https://github.com/wobondar/pi-codex-fast/commit/f2a2338973a88c1501e7210c475e3c37ba1b8dab)), closes [#8](https://github.com/wobondar/pi-codex-fast/issues/8)
+
+
+### Dependencies
+
+* **deps:** bump @anthropic-ai/sdk, @mariozechner/pi-ai and @mariozechner/pi-coding-agent ([#7](https://github.com/wobondar/pi-codex-fast/issues/7)) ([6dda03f](https://github.com/wobondar/pi-codex-fast/commit/6dda03f5a0e79f798ab6e49a1ae9f2801197f84e))
+* **deps:** bump fast-xml-builder from 1.1.5 to 1.2.0 ([#10](https://github.com/wobondar/pi-codex-fast/issues/10)) ([0b2a476](https://github.com/wobondar/pi-codex-fast/commit/0b2a476bd7206d9cce2d8fada6f9a0f96fb1e57d))
+
 ## [1.0.3](https://github.com/wobondar/pi-codex-fast/compare/v1.0.2...v1.0.3) (2026-04-30)
 
 

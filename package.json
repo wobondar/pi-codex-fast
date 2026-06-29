@@ -37,7 +37,7 @@
     "prepublishOnly": "npm run fmt:check && npm run lint && npm run test"
   },
   "devDependencies": {
-    "@types/node": "^25.6.0",
+    "@types/node": "^26.0.1",
     "oxfmt": "^0.55.0",
     "oxlint": "^1.62.0",
     "oxlint-tsgolint": "^0.23.0",
